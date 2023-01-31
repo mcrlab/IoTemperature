@@ -22,7 +22,7 @@ echo "Press reset button on esp32"
 
 counter=0
 
-while [ ! -e /dev/cu.usbmodem1234561 ]; do
+while [ ! -e $AMPY_PORT ]; do
     sleep 1
     counter=$((counter + 1))
     echo "Waiting for reset..."
@@ -31,16 +31,20 @@ while [ ! -e /dev/cu.usbmodem1234561 ]; do
     fi
 done
 
-echo "Upoading mqtt libs"
-ampy put lib
+echo "Upoading libs"
+ampy put src/lib lib
 sleep 1
-echo "Uploading lantern library"
-ampy put lantern/
-sleep 1
+
 echo "Uploading runtime config"
-ampy put config.json config.json
-sleep 1xxw
+ampy put src/config.txt config.txt
+sleep 1
+
+echo "Uploading secrets"
+ampy put src/secrets.py secrets.py
+
+sleep 1
 echo "Uploading main script"
-ampy put main.py
+
+ampy put src/main.py main.py
 echo "All done!"
 exit 0
